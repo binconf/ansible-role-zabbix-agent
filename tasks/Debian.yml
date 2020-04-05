@@ -1,0 +1,28 @@
+- name: (Debian/Ubuntu) Check if zabbix-release package is present
+  command: dpkg-query -W zabbix-release
+  register: is_present
+  check_mode: no
+  ignore_errors: yes
+  changed_when: is_present.rc == 1
+
+- name: (Debian/Ubuntu) Download zabbix-release package
+  get_url:
+    url: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/{{ ansible_distribution|lower }}/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+{{ ansible_distribution_release }}_all.deb" # noqa 204
+    dest: /tmp/zabbix-release.deb
+  when: is_present is failed
+
+- name: (Debian/Ubuntu) Install zabbix-release package
+  apt:
+    deb: /tmp/zabbix-release.deb
+  when: is_present is failed
+
+- name: (Debian/Ubuntu) Remove downloaded package
+  file:
+    path: /tmp/zabbix-release.deb
+    state: absent
+  when: is_present is failed
+
+- name: (Debian/Ubuntu) Apt update cache
+  apt:
+    update_cache: yes
+  when: is_present is failed

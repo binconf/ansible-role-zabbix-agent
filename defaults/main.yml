@@ -1,0 +1,14 @@
+---
+zabbix_version: 4.4
+zabbix_agent_pidfile: /var/run/zabbix/zabbix_agentd.pid
+zabbix_agent_logfile: /var/log/zabbix/zabbix_agentd.log
+zabbix_agent_windows_logfile: C:\\Program Files\\Zabbix\\zabbix_agentd.log
+zabbix_agent_logfilesize: 100
+zabbix_agent_enableremotecommands: 0
+zabbix_agent_logremotecommands: 0
+zabbix_agent_listenport: 10050
+zabbix_agent_include: /etc/zabbix/zabbix_agentd.d
+zabbix_agent_windows_include: C:\\Program Files\\Zabbix\\zabbix_agent.d
+zabbix_agent_timeout: 15
+zabbix_agent_psk_file: /etc/zabbix/zabbix_agentd.psk
+zabbix_agent_windows_psk: C:\\Program Files\\Zabbix\\zabbix_agent.d

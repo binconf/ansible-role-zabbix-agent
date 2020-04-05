@@ -1,0 +1,32 @@
+{{ ansible_managed | comment }}
+{% if ansible_os_family != "Windows" %}
+PidFile={{ zabbix_agent_pidfile }}
+{% endif %}
+{% if ansible_os_family == "Windows" %}
+LogFile={{ zabbix_agent_windows_logfile }}
+{% else %}
+LogFile={{ zabbix_agent_logfile }}
+{% endif %}
+LogFileSize={{ zabbix_agent_logfilesize }}
+EnableRemoteCommands={{ zabbix_agent_enableremotecommands }}
+LogRemoteCommands={{ zabbix_agent_logremotecommands }}
+Server={{ zabbix_server_address }}
+ListenPort={{ zabbix_agent_listenport }}
+ServerActive={{ zabbix_server_address}}
+Hostname={{ inventory_hostname }}
+{% if ansible_os_family == "Windows" %}
+Include={{ zabbix_agent_windows_include }}
+{% else %}
+Include={{ zabbix_agent_include }}
+{% endif %}
+Timeout={{ zabbix_agent_timeout }}
+{% if zabbix_agent_psk is defined %}
+TLSConnect=psk
+TLSAccept=psk
+{% if ansible_os_family == "Windows" %}
+TLSPSKFile={{ zabbix_agent_windows_psk_file }}
+{% else %}
+TLSPSKFile={{ zabbix_agent_psk_file }}
+{% endif %}
+TLSPSKIdentity={{ inventory_hostname }}
+{% endif %}

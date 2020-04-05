@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    zabbix_server_address: 127.0.0.1
+    zabbix_agent_psk: b0be72ae397d748148a3395e64153a72eb541f52dc165de2288bb2c231c2ac41
+  roles:
+    - role: ansible-role-zabbix-agent

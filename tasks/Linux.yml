@@ -1,0 +1,58 @@
+- name: (Linux) Install zabbix-agent and zabbix-sender packages
+  package:
+    name:
+      - zabbix-agent
+      - zabbix-sender
+    state: present
+  notify: restart-zabbix-agent
+
+- name: (Linux) Configure Zabbix Agent
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+  notify: restart-zabbix-agent
+
+- name: (Linux) Delete default user parameters
+  file:
+    path: "/etc/zabbix/zabbix_agent.d/{{ item }}"
+    state: absent
+  with_items:
+    - userparameter_mysql.conf
+    - zabbix_mdraid.conf
+  notify: restart-zabbix-agent
+
+- name: (Linux) Upload custom user parameters
+  template:
+    src: "{{ item }}"
+    dest: /etc/zabbix/zabbix_agent.d/{{ item }}
+    owner: "root"
+    group: "zabbix"
+    mode: 0640
+  with_items: "{{ zabbix_user_parameters }}"
+  notify: restart-zabbix-agent
+  when: zabbix_user_parameters is defined
+
+- name: (Linux) Upload custom monitoring scripts
+  copy:
+    src: zabbix_scripts/{{ item }}
+    dest: /usr/local/bin/{{ item }}
+    owner: "root"
+    mode: 0755
+  with_items: "{{ zabbix_scripts }}"
+  notify: restart-zabbix-agent
+  when: zabbix_scripts is defined
+
+- name: (Linux) Generate zabbix_agentd.psk
+  template:
+    src: zabbix_agentd.psk.j2
+    dest: /etc/zabbix/zabbix_agentd.psk
+    owner: zabbix
+    group: zabbix
+    mode: 0600
+  when: zabbix_agent_psk is defined
+
+- name: (Linux) Enable zabbix-agent service
+  service:
+    name: zabbix-agent
+    enabled: yes
+  notify: restart-zabbix-agent

@@ -1,0 +1,9 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: (Debian/Ubuntu) Install xz-utils
+      apt:
+        name: xz-utils
+        state: present
+      when: ansible_os_family == "Debian"
