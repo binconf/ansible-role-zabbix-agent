@@ -14,7 +14,7 @@
 
 - name: (Linux) Delete default user parameters
   file:
-    path: "/etc/zabbix/zabbix_agent.d/{{ item }}"
+    path: "/etc/zabbix/zabbix_agentd.d/{{ item }}"
     state: absent
   with_items:
     - userparameter_mysql.conf
@@ -22,9 +22,9 @@
   notify: restart-zabbix-agent
 
 - name: (Linux) Upload custom user parameters
-  template:
-    src: "{{ item }}"
-    dest: /etc/zabbix/zabbix_agent.d/{{ item }}
+  copy:
+    src: zabbix-user-conf/{{ item }}
+    dest: /etc/zabbix/zabbix_agentd.d/{{ item }}
     owner: "root"
     group: "zabbix"
     mode: 0640
@@ -34,7 +34,7 @@
 
 - name: (Linux) Upload custom monitoring scripts
   copy:
-    src: zabbix_scripts/{{ item }}
+    src: zabbix-scripts/{{ item }}
     dest: /usr/local/bin/{{ item }}
     owner: "root"
     mode: 0755
