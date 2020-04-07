@@ -10,5 +10,6 @@ zabbix_agent_listenport: 10050
 zabbix_agent_include: /etc/zabbix/zabbix_agentd.d
 zabbix_agent_windows_include: C:\\Program Files\\Zabbix\\zabbix_agent.d
 zabbix_agent_timeout: 15
+zabbix_agent_psk_identity: "{{ inventory_hostname }}"
 zabbix_agent_psk_file: /etc/zabbix/zabbix_agentd.psk
 zabbix_agent_windows_psk: C:\\Program Files\\Zabbix\\zabbix_agent.d

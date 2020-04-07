@@ -28,5 +28,5 @@ TLSPSKFile={{ zabbix_agent_windows_psk_file }}
 {% else %}
 TLSPSKFile={{ zabbix_agent_psk_file }}
 {% endif %}
-TLSPSKIdentity={{ inventory_hostname }}
+TLSPSKIdentity={{ zabbix_agent_psk_identity }}
 {% endif %}
