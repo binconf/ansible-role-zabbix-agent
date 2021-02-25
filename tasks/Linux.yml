@@ -22,7 +22,7 @@
   notify: restart-zabbix-agent
 
 - name: (Linux) Upload custom user parameters
-  copy:
+  template:
     src: zabbix-user-conf/{{ item }}
     dest: /etc/zabbix/zabbix_agentd.d/{{ item }}
     owner: "root"
