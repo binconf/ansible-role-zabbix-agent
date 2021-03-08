@@ -51,16 +51,6 @@
     mode: 0600
   when: zabbix_agent_psk is defined
 
-- name: (Linux) Install pip3
-  apt:
-    name: python3-pip
-    state: present
-
-- name: (Linux) Install redis
-  pip:
-    name: redis
-    executable: pip3
-
 - name: (Linux) Enable zabbix-agent service
   service:
     name: zabbix-agent
